@@ -4,9 +4,10 @@ import styles from "../styles/HourBlock.module.css";
 export default function HourBlock({ hour }) {
   const [expanded, setExpanded] = useState(false);
 
-  const time = new Date(hour.date).toLocaleTimeString([], {
+  const time = new Date(hour.date).toLocaleTimeString("en-US", {
     hour: "2-digit",
     minute: "2-digit",
+    timeZone: "Asia/Ho_Chi_Minh", // 👈 Thêm dòng này để cố định múi giờ Việt Nam
   });
 
   return (

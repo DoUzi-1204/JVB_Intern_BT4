@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 // import { getFormattedFullDate } from "../lib/utils";
-import Chart from "../components/chart";
+import Chart from "../components/Chart";
 import DailyCards from "../components/DailyCards";
 import Input from "../components/Input";
 import MainCard from "../components/MainCard";

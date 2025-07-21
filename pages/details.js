@@ -1,4 +1,4 @@
-import { useRouter } from "next/router";
+// import { useRouter } from "next/router";
 
 export async function getServerSideProps(context) {
   const { city = "Hanoi", day = 0 } = context.query;

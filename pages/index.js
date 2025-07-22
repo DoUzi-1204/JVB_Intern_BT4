@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState, useRef } from "react";
 import Chart from "../components/Chart";
 import DailyCards from "../components/DailyCards";
 import Input from "../components/Input";
@@ -6,6 +6,7 @@ import MainCard from "../components/MainCard";
 import { unknownWeather } from "../lib/defaultData";
 import Seo from "../components/Seo";
 import WeatherDetailModal from "../components/WeatherDetailModal";
+import Loading from "../components/Loading";
 import styles from "../styles/Home.module.css";
 
 export default function Home() {
@@ -27,14 +28,15 @@ export default function Home() {
   const [detailDate, setDetailDate] = useState("");
   const [detailData, setDetailData] = useState([]);
 
-  const [isInitialLoad, setIsInitialLoad] = useState(true);
+  // ✅ Loading chỉ cho lần đầu
   const [loading, setLoading] = useState(true);
+  const isFirstLoad = useRef(true);
 
   useEffect(() => {
     const fetchWeather = async () => {
       try {
-        if (isInitialLoad) setLoading(true);
         setError("");
+        if (isFirstLoad.current) setLoading(true); // ✅ Chỉ loading khi F5
 
         const res = await fetch(
           `/api/weather?city=${encodeURIComponent(search)}`
@@ -59,9 +61,9 @@ export default function Home() {
         setDailyWeather([]);
         setTodayHourlyWeather([]);
       } finally {
-        if (isInitialLoad) {
+        if (isFirstLoad.current) {
           setLoading(false);
-          setIsInitialLoad(false);
+          isFirstLoad.current = false;
         }
       }
     };
@@ -136,9 +138,8 @@ export default function Home() {
       ? currentWeather || unknownWeather
       : dailyWeather[selectedCard - 1] || unknownWeather;
 
-  if (loading) {
-    return <div className={styles.loading}>Loading...</div>;
-  }
+  // ✅ Hiển thị loading nếu là lần đầu
+  if (loading) return <Loading />;
 
   return (
     <div className={styles.wrapper}>

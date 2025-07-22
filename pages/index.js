@@ -1,5 +1,5 @@
+// pages/index.js
 import { useEffect, useState } from "react";
-// import { getFormattedFullDate } from "../lib/utils";
 import Chart from "../components/Chart";
 import DailyCards from "../components/DailyCards";
 import Input from "../components/Input";
@@ -7,7 +7,6 @@ import MainCard from "../components/MainCard";
 import { unknownWeather } from "../lib/defaultData";
 import Seo from "../components/Seo";
 import WeatherDetailModal from "../components/WeatherDetailModal";
-
 import styles from "../styles/Home.module.css";
 
 export default function Home() {
@@ -140,6 +139,7 @@ export default function Home() {
             currentWeather={currentWeather}
             cityInfo={cityInfo}
             displayWeather={displayWeather}
+            hideTime={selectedCard > 0}
           />
         </div>
         <div className={styles.chart}>

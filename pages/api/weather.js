@@ -18,11 +18,11 @@ const mapWeatherAPIData = (data) => {
   const cityInfo = {
     name: location.name,
     country: location.country,
-    timeZone: location.tz_id,
+    tz_id: location.tz_id, //  giữ đúng tên gốc từ API
   };
 
   const currentWeather = {
-    date: new Date(current.last_updated).getTime(),
+    date: current.last_updated, //  giữ chuỗi ISO từ API
     temp_c: current.temp_c,
     temp_f: current.temp_f,
     weather: current.condition.text,
@@ -35,8 +35,7 @@ const mapWeatherAPIData = (data) => {
 
   const today = forecast.forecastday[0];
   const todayHourlyWeather = today.hour.map((hour) => ({
-    date: new Date(hour.time).getTime(),
-    time: hour.time,
+    date: hour.time,
     temp_c: hour.temp_c,
     temp_f: hour.temp_f,
     weather: hour.condition.text,
@@ -45,8 +44,6 @@ const mapWeatherAPIData = (data) => {
     windSpeed_kph: hour.wind_kph,
     windSpeed_mph: hour.wind_mph,
     uv: hour.uv,
-
-    //  Bổ sung đặc trưng
     pressure_mb: hour.pressure_mb,
     cloud: hour.cloud,
     precip_mm: hour.precip_mm,
@@ -59,8 +56,7 @@ const mapWeatherAPIData = (data) => {
 
   const dailyWeather = forecast.forecastday.slice(1).map((day) => {
     const hours = day.hour.map((hour) => ({
-      date: new Date(hour.time).getTime(),
-      time: hour.time,
+      date: hour.time,
       temp_c: hour.temp_c,
       temp_f: hour.temp_f,
       weather: hour.condition.text,
@@ -69,8 +65,6 @@ const mapWeatherAPIData = (data) => {
       windSpeed_kph: hour.wind_kph,
       windSpeed_mph: hour.wind_mph,
       uv: hour.uv,
-
-      //  Bổ sung đặc trưng
       pressure_mb: hour.pressure_mb,
       cloud: hour.cloud,
       precip_mm: hour.precip_mm,
@@ -82,7 +76,7 @@ const mapWeatherAPIData = (data) => {
     }));
 
     return {
-      date: new Date(day.date).getTime(),
+      date: day.date,
       temp_c: day.day.avgtemp_c,
       temp_f: day.day.avgtemp_f,
       weather: day.day.condition.text,

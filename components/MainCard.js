@@ -2,7 +2,7 @@ import { useState } from "react";
 import { getFormattedFullDate } from "../lib/utils";
 import styles from "../styles/MainCard.module.css";
 
-const MainCard = ({ displayWeather, cityInfo }) => {
+const MainCard = ({ displayWeather, cityInfo, hideTime = false }) => {
   const [unit, setUnit] = useState("C");
 
   const {
@@ -21,13 +21,15 @@ const MainCard = ({ displayWeather, cityInfo }) => {
   const windSpeed = unit === "C" ? windSpeed_kph : windSpeed_mph;
   const windUnit = unit === "C" ? "km/hr" : "mph";
 
+  const tzId = cityInfo?.tz_id || "UTC";
+
   return (
     <div className={styles["main-card"]}>
       <p className={styles["main-card__city"]}>
         {cityInfo?.name}, {cityInfo?.country}
       </p>
       <p className={styles["main-card__date"]}>
-        {getFormattedFullDate(date || Date())}
+        {getFormattedFullDate(date || Date(), tzId, hideTime)}
       </p>
 
       <div className={styles["main-card__temp-block"]}>

@@ -31,12 +31,17 @@ const MiniCard = ({
     data = {
       icon: "unknown",
       humidity: "--",
+      date: Date.now(),
+      timeZone: "UTC",
     };
   }
 
   const iconSrc = data.icon?.includes("cdn.weatherapi.com")
     ? `https:${data.icon}`
     : `/icons/${data.icon}.png`;
+
+  const dateLabel =
+    i === 0 ? "Today" : getFormattedDate(data.date, data.timeZone || "UTC");
 
   return (
     <button
@@ -45,7 +50,7 @@ const MiniCard = ({
       onDoubleClick={handleDoubleClick}
     >
       <p className={styles["mini-card-date"]}>
-        <strong>{i === 0 ? "Today" : getFormattedDate(data.date)}</strong>
+        <strong>{dateLabel}</strong>
       </p>
       <img
         className={styles["mini-card-icon"]}

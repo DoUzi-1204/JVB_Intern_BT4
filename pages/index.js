@@ -27,10 +27,15 @@ export default function Home() {
   const [detailDate, setDetailDate] = useState("");
   const [detailData, setDetailData] = useState([]);
 
+  const [isInitialLoad, setIsInitialLoad] = useState(true);
+  const [loading, setLoading] = useState(true);
+
   useEffect(() => {
     const fetchWeather = async () => {
       try {
+        if (isInitialLoad) setLoading(true);
         setError("");
+
         const res = await fetch(
           `/api/weather?city=${encodeURIComponent(search)}`
         );
@@ -53,6 +58,11 @@ export default function Home() {
         setCurrentWeather(null);
         setDailyWeather([]);
         setTodayHourlyWeather([]);
+      } finally {
+        if (isInitialLoad) {
+          setLoading(false);
+          setIsInitialLoad(false);
+        }
       }
     };
 
@@ -102,7 +112,6 @@ export default function Home() {
         : dailyWeather[dayIndex - 1];
 
     if (selectedDay) {
-      //  Gắn thêm múi giờ cho từng giờ
       const hoursWithTimeZone = (selectedDay.hours || []).map((h) => ({
         ...h,
         timeZone: cityInfo?.tz_id || "UTC",
@@ -126,6 +135,10 @@ export default function Home() {
     selectedCard === 0
       ? currentWeather || unknownWeather
       : dailyWeather[selectedCard - 1] || unknownWeather;
+
+  if (loading) {
+    return <div className={styles.loading}>Loading...</div>;
+  }
 
   return (
     <div className={styles.wrapper}>

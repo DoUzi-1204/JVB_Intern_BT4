@@ -4,17 +4,22 @@ import styles from "../styles/HourBlock.module.css";
 export default function HourBlock({ hour }) {
   const [expanded, setExpanded] = useState(false);
 
-  const time = new Date(hour.date).toLocaleTimeString("en-US", {
-    hour: "2-digit",
-    minute: "2-digit",
-    hour12: true,
-    timeZone: hour.timeZone || "UTC", //  Fix lệch giờ
-  });
+  const time = hour.date.split(" ")[1]; // "00:00"
 
   return (
     <div className={styles["hour-block"]}>
       <div className={styles.summary}>
         <span>{time}</span>
+        {/* Thêm icon + text */}
+        <span style={{ display: "flex", alignItems: "center", gap: "0.5rem" }}>
+          <img
+            src={`https:${hour.icon}`}
+            alt={hour.weather}
+            width={32}
+            height={32}
+          />
+          <span>{hour.weather}</span>
+        </span>
         <span>🌡 {hour.temp_c}°C</span>
         <span>💧 {hour.humidity}%</span>
         <span>☀️ {hour.uv}</span>

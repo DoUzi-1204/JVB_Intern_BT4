@@ -3,6 +3,8 @@
   border-radius: 8px;
   padding: 10px;
   background: #f9f9f9;
+  width: 750px;
+  flex-shrink: 0;
 }
 
 .summary {

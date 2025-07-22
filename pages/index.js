@@ -1,4 +1,3 @@
-// pages/index.js
 import { useEffect, useState } from "react";
 import Chart from "../components/Chart";
 import DailyCards from "../components/DailyCards";
@@ -103,6 +102,12 @@ export default function Home() {
         : dailyWeather[dayIndex - 1];
 
     if (selectedDay) {
+      //  Gắn thêm múi giờ cho từng giờ
+      const hoursWithTimeZone = (selectedDay.hours || []).map((h) => ({
+        ...h,
+        timeZone: cityInfo?.tz_id || "UTC",
+      }));
+
       setDetailDate(
         new Date(selectedDay.date).toLocaleDateString("en-GB", {
           weekday: "long",
@@ -111,7 +116,8 @@ export default function Home() {
           day: "numeric",
         })
       );
-      setDetailData(selectedDay.hours || []);
+
+      setDetailData(hoursWithTimeZone);
       setDetailVisible(true);
     }
   }
@@ -181,6 +187,7 @@ export default function Home() {
         onClose={() => setDetailVisible(false)}
         data={detailData}
         date={detailDate}
+        timeZone={cityInfo?.tz_id}
       />
     </div>
   );

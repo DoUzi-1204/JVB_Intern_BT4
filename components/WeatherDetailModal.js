@@ -6,6 +6,7 @@ export default function WeatherDetailModal({
   onClose,
   data = [],
   date,
+  timeZone = "UTC", // <== thêm props timeZone
 }) {
   if (!visible) return null;
 
@@ -20,7 +21,7 @@ export default function WeatherDetailModal({
         </div>
         <div className={styles.content}>
           {data.map((hour, index) => (
-            <HourBlock key={index} hour={hour} />
+            <HourBlock key={index} hour={{ ...hour, timeZone }} />
           ))}
         </div>
       </div>

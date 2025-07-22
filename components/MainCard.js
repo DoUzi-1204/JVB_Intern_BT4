@@ -9,7 +9,7 @@ const MainCard = ({ displayWeather, cityInfo, hideTime = false }) => {
   useEffect(() => {
     if (!hideTime) {
       const timer = setInterval(() => {
-        setLocalTime(new Date());
+        setLocalTime(new Date()); // luôn dùng giờ hệ thống
       }, 60 * 1000); // cập nhật mỗi phút
       return () => clearInterval(timer);
     }
@@ -35,16 +35,18 @@ const MainCard = ({ displayWeather, cityInfo, hideTime = false }) => {
 
   const formattedDate = hideTime
     ? getFormattedFullDate(date || Date(), tzId, true)
-    : `${localTime.toLocaleTimeString("en-US", {
+    : `${new Intl.DateTimeFormat("en-US", {
         hour: "2-digit",
         minute: "2-digit",
         hour12: true,
-      })}, ${localTime.toLocaleDateString("en-US", {
+        timeZone: tzId,
+      }).format(localTime)}, ${new Intl.DateTimeFormat("en-US", {
         weekday: "short",
         month: "short",
         day: "numeric",
         year: "numeric",
-      })}`;
+        timeZone: tzId,
+      }).format(localTime)}`;
 
   return (
     <div className={styles["main-card"]}>

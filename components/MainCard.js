@@ -1,9 +1,19 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { getFormattedFullDate } from "../lib/utils";
 import styles from "../styles/MainCard.module.css";
 
 const MainCard = ({ displayWeather, cityInfo, hideTime = false }) => {
   const [unit, setUnit] = useState("C");
+  const [localTime, setLocalTime] = useState(new Date());
+
+  useEffect(() => {
+    if (!hideTime) {
+      const timer = setInterval(() => {
+        setLocalTime(new Date());
+      }, 60 * 1000); // cập nhật mỗi phút
+      return () => clearInterval(timer);
+    }
+  }, [hideTime]);
 
   const {
     date,
@@ -23,14 +33,26 @@ const MainCard = ({ displayWeather, cityInfo, hideTime = false }) => {
 
   const tzId = cityInfo?.tz_id || "UTC";
 
+  const formattedDate = hideTime
+    ? getFormattedFullDate(date || Date(), tzId, true)
+    : `${localTime.toLocaleTimeString("en-US", {
+        hour: "2-digit",
+        minute: "2-digit",
+        hour12: true,
+      })}, ${localTime.toLocaleDateString("en-US", {
+        weekday: "short",
+        month: "short",
+        day: "numeric",
+        year: "numeric",
+      })}`;
+
   return (
     <div className={styles["main-card"]}>
       <p className={styles["main-card__city"]}>
         {cityInfo?.name}, {cityInfo?.country}
       </p>
-      <p className={styles["main-card__date"]}>
-        {getFormattedFullDate(date || Date(), tzId, hideTime)}
-      </p>
+
+      <p className={styles["main-card__date"]}>{formattedDate}</p>
 
       <div className={styles["main-card__temp-block"]}>
         <img
